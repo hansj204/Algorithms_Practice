@@ -1,6 +1,6 @@
 function solution(arr)
 {
-    var answer = [];
+    const answer = [];
 
     for(elm of arr) {
         if(elm === answer[answer.length - 1]) continue;
