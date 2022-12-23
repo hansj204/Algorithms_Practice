@@ -1,0 +1,13 @@
+function solution(s) {
+    let answer = 0;
+
+    numList = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+
+    for(const num of numList) {
+        if(s.includes(num)) s = s.replaceAll(num, numList.indexOf(num)+1);
+    }
+
+    return Number(s);
+}
+
+console.log(solution('2three45sixseven'))
