@@ -5,7 +5,7 @@ const [info, ...distance] = require(`fs`).readFileSync(filePath).toString().trim
 const [N, M, K, X] = info.split(` `).map(Number)
 
 const nodes = Array.from({length: N + 1}, () => []);
-const visited = Array.from({length: N + 1}, () => -1);
+const visited = Array.from({length: N + 1}, () => 0);
 const answer = [];
 
 for(const dis of distance) {
@@ -33,7 +33,7 @@ function BFS(node) {
         const parentNode = queue.shift();
 
         for(const childNode of nodes[parentNode]) {
-            if(-1 !== visited[childNode]) continue;
+            if(0 !== visited[childNode]) continue;
 
             visited[childNode] = visited[parentNode] + 1;
             queue.push(childNode);
