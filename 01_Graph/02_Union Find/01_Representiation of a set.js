@@ -1,4 +1,4 @@
-// https://www.acmicpc.net/problem/1976
+// https://www.acmicpc.net/problem/1717
 const filePath = `linux` === process.platform ? `dev/stdin` : `input.txt`;
 const [info, ...setOrigin] = require(`fs`).readFileSync(filePath).toString().trim().split(`\r\n`);
 
@@ -25,7 +25,7 @@ function union(a, b) {
 
 function find(val) {
     if(val === parent[val]) return val;
-    else parent[val] = find(parent[val]);
+    return parent[val] = find(parent[val]);
 }
 
 function checkSameSet(a, b) {
