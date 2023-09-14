@@ -3,64 +3,25 @@ const filePath = `linux` === process.platform ? `dev/stdin` : `input.txt`;
 const [A, B, C] = require(`fs`).readFileSync(filePath).toString().trim().split(` `).map(Number);
 
 let visited = Array.from({ length: 201 }, () => Array.from({ length: 201 }, () => Array(201).fill(false)));
-let result = [];
+let result = Array.from({ length: 201 });
 
-let queue = [];
-queue.push([0, 0, C]);
+BFS();
 
-while (queue.length !== 0) {
-  let [x, y, z] = queue.shift();
-
-  if (!visited[x][y][z]) {
-    visited[x][y][z] = true;
-    if (x === 0) {
-      result.push(z);
-    }
-
-    // x -> y
-    if (x + y > B) {
-      queue.push([x + y - B, B, z]);
-    } else {
-      queue.push([0, x + y, z]);
-    }
-
-    // x -> z
-    if (x + z > C) {
-      queue.push([x + z - C, y, C]);
-    } else {
-      queue.push([0, y, x + z]);
-    }
-
-    // y -> x
-    if (x + y > A) {
-      queue.push([A, x + y - A, z]);
-    } else {
-      queue.push([x + y, 0, z]);
-    }
-
-    // y -> z
-    if (y + z > C) {
-      queue.push([x, y + z - C, C]);
-    } else {
-      queue.push([x, 0, y + z]);
-    }
-
-    // z -> x
-    if (x + z > A) {
-      queue.push([A, y, x + z - A]);
-    } else {
-      queue.push([x + z, y, 0]);
-    }
-
-    // z -> y
-    if (y + z > B) {
-      queue.push([x, B, y + z - B]);
-    } else {
-      queue.push([x, y + z, 0]);
-    }
-  }
+for(let idx = 0; idx < 201; idx++) {
+  if(result[idx]) process.stdout.write(idx + ' ');
 }
 
-result.sort((a, b) => a - b);
+function BFS() {
+  const queue = [{0 : 0}];
+  visited[0][0] =true;
+  result[visited[2]] - true;
 
-console.log(result.join(" "));
+  while(0 < queue.length) {
+      const parentNode = queue.shift();
+
+      for(const childNode of nodes[parentNode]) {
+          visited[childNode]++;
+          queue.push(childNode);
+       }
+  }
+}

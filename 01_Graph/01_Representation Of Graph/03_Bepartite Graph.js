@@ -23,26 +23,23 @@ const V = Math.max(...nodeList.map(node => node[0]));
 const visited = Array.from({length: V + 1}, () => 0);
 
 for(let idx = 1; idx <= V; idx++) {
-    if(isEven) BFS(idx);
+    if(isEven) DFS(idx);
     else break;
 }
 
 console.log(isEven? 'YES'  : 'NO')
 
-function BFS(node) {
-    const queue = [node];
+function DFS(node) {
     visited[node] = true;
 
-    while(0 < queue.length) {
-        const parentNode = queue.shift();
-
-        for(const childNode of nodes[parentNode]) {
-            if(!visited[childNode]) {
-                checked[childNode] = (checked[node] + 1) % 2;
-                BFS(childNode);
-            } else if(checked[node] == checked[childNode]) {
-                isEven = false;
-            }
-         }
+    for(const childNode of nodes[parentNode]) {
+        if(!visited[childNode]) {
+            // 인접한 노드는 같은 지밥이아님으로 이전 노드와 다른 집합으로 처리
+            checked[childNode] = (checked[node] + 1) % 2;
+            DFS(childNode);
+        } else if(checked[node] == checked[childNode]) {
+            // 방문한 노드가 현재 내 노드와 같으면 이분 그래프 X
+            isEven = false;
+        }
     }
 }
