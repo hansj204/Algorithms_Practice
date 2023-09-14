@@ -1,6 +1,8 @@
 // https://www.acmicpc.net/problem/2251
 const filePath = `linux` === process.platform ? `dev/stdin` : `input.txt`;
 const [A, B, C] = require(`fs`).readFileSync(filePath).toString().trim().split(` `).map(Number);
+const Sender = [0,0,1,1,2,2];
+const Receiver = [1,2,0,2,0,1];
 
 let visited = Array.from({ length: 201 }, () => Array.from({ length: 201 }, () => Array(201).fill(false)));
 let result = Array.from({ length: 201 });
