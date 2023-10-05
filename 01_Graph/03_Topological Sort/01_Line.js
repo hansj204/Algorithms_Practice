@@ -8,6 +8,7 @@ const nodes = Array.from({length: N + 1}, () => []);
 const visited = Array.from({length: N + 1}, () => 0);
 const queue = [];
 
+// set node
 for(const dis of edge) {
     const [A , B] = dis.split(` `).map(Number)
     nodes[A].push(B)
@@ -16,6 +17,7 @@ for(const dis of edge) {
     visited[B]++;
 }
 
+// 위상 정렬
 queue.forEach(edge => {
     BFS(edge);
 })

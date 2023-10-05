@@ -6,32 +6,33 @@ const [N, M] = info.split(` `).map(Number)
 const nodes = Array.from({length: N + 1}, () => []);
 const visited = Array.from({length: N + 1}, () => 0);
 
+// set node
 for(const dis of edge) {
     const [U, V, W] = dis.split(` `).map(Number)
     nodes[U].push([V, W])
 }
 
-BFS(Number(K));
+// dijkstra
+const queue = [Number(K)];
+visited[Number(K)] = 0;
 
-for(let idx in visited) {
-    if(1 < idx && 0 === visited[idx]) visited[idx] = 'INF';
-}
+while(0 < queue.length) {
+    const parentNode = queue.shift();
 
-console.log(visited.slice(1).join('\n'))
+    for(const childNode of nodes[parentNode]) {
+        const [V, W] = childNode;
+        if(0 !== visited[V]) continue;
 
-function BFS(node) {
-    const queue = [node];
-    visited[node] = 0;
-
-    while(0 < queue.length) {
-        const parentNode = queue.shift();
-
-        for(const childNode of nodes[parentNode]) {
-            const [V, W] = childNode;
-            if(0 !== visited[V]) continue;
-
-            visited[V] += (W + visited[parentNode]);
-            queue.push(V);
-         }
+        visited[V] += (W + visited[parentNode]);
+        queue.push(V);
     }
 }
+
+// output
+visited.splice(0, 1);
+
+for(let idx = 1; idx <= visited.length; idx++) {
+    if(0 === visited[idx]) visited[idx] = 'INF';
+}
+
+console.log(visited.join('\n'))

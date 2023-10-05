@@ -9,29 +9,29 @@ const [busS, busE] = lines.pop().split(` `).map(Number)
 const nodes = Array.from({length: Number(N) + 1}, () => []);
 const visited = Array.from({length: Number(N) + 1}, () => 0);
 
+// set node
 for(const bus of lines.slice(2)) {
     const [S, E, C] = bus.split(` `).map(Number)
     nodes[S].push([E, C])
 }
 
-BFS(busS)
+// dijkstra
+const queue = [busS];
+visited[busS] = 0;
 
-console.log(visited[busE])
+while(0 < queue.length) {        
+    const parentNode = queue.shift();
 
-function BFS(node) {
-    const queue = [node];
-    visited[node] = 0;
+    for(const childNode of nodes[parentNode]) {
+        const [V, W] = childNode;
+        const val = W + visited[parentNode];
 
-    while(0 < queue.length) {        
-        const parentNode = queue.shift();
-
-        for(const childNode of nodes[parentNode]) {
-            const [V, W] = childNode;
-
-            if(0 !== visited[V] && visited[V] < (W + visited[parentNode])) continue;
-            
-            visited[V] = (W + visited[parentNode]);
-            queue.push(V);
-         }
+        if(0 !== visited[V] && visited[V] < val) continue;
+        
+        visited[V] = val;
+        queue.push(V);
     }
 }
+
+// output
+console.log(visited[busE])

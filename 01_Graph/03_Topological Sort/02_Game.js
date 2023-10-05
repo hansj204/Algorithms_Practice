@@ -1,37 +1,48 @@
-// https://www.acmicpc.net/problem/2252
+// https://www.acmicpc.net/problem/1516 => ???
 const filePath = `linux` === process.platform ? `dev/stdin` : `input.txt`;
-const [info, ...edge] = require(`fs`).readFileSync(filePath).toString().trim().split(`\r\n`)
+const [N, ...buildingList] = require(`fs`).readFileSync(filePath).toString().trim().split(`\r\n`);
 
-const [N, M] = info.split(` `).map(Number)
+const nodes = Array.from({ length: Number(N) + 1 }, () => []);
+const inDegree = Array(Number(N) + 1).fill(0);
+const result = Array(Number(N) + 1).fill(0);
 
-const nodes = Array.from({length: N + 1}, () => []);
-const visited = Array.from({length: N + 1}, () => 0);
-const queue = [];
+// set node
+for (let idx = 0; idx < Number(N); idx++) {
+    const info = buildingList[idx].split(` `).map(Number);
+    info.splice(info.length - 1);
 
-for(const dis of edge) {
-    const [A , B] = dis.split(` `).map(Number)
-    nodes[A].push(B)
+    const [time, ...pre] = info;
+    result[idx + 1] = time;
 
-    queue.push(A);
-    visited[B]++;
+    for (const p of pre) {
+        nodes[p].push(idx + 1);
+        inDegree[idx + 1]++;
+    }
 }
 
-queue.forEach(edge => {
-    BFS(edge);
-})
+// 위상 정렬
+const queue = [];
 
-function BFS(node) {
-    const queue = [node];
-
-    while(0 < queue.length) {
-        const parentNode = queue.shift();
-
-        process.stdout.write(parentNode + ` `)
-
-        for(const childNode of nodes[parentNode]) {
-            visited[childNode]--;
-
-            if(0 === visited[childNode]) queue.push(childNode);
-         }
+for (let i = 1; i <= N; i++) {
+    if (inDegree[i] === 0) {
+        queue.push(i);
     }
+}
+
+while (queue.length > 0) {
+    const node = queue.shift();
+
+    for (const childNode of nodes[node]) {
+        inDegree[childNode]--;
+        result[childNode] = Math.max(result[childNode], result[node] + result[childNode]); 
+        
+        if (inDegree[childNode] === 0) {
+            queue.push(childNode);
+        }
+    }
+}
+
+// output
+for (let idx = 1; idx <= N; idx++) {
+    console.log(result[idx]);
 }
